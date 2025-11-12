@@ -1,5 +1,5 @@
 [project]
-name = "dobble-fun"
+name = "dobble-gen"
 version = "0.1.0"
 description = "Generate your own Dobble cards! Ready to be printed!"
 readme = "README.md"
@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-dobble-fun = "dobble_fun:generator.main"
+dobble-gen = "dobble_gen:generator.main"
 
 [build-system]
 requires = ["uv_build>=0.9.9,<0.10.0"]

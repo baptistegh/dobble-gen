@@ -154,6 +154,11 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
 # mypy
 .mypy_cache/
 .dmypy.json

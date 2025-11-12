@@ -24,7 +24,7 @@ style:
 # Run the application
 .PHONY: run
 run:
-	@uv run dobble-fun
+	@uv run dobble-gen
 
 # Clean up the virtual environment
 .PHONY: clean

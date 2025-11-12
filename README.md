@@ -1,4 +1,4 @@
-# Dobble Fun 🎴
+# Dobble Gen 🎴
 
 Create your own personalized **Dobble** (or **Spot It!**) card game using your own set of images. This project generates a complete, print-ready PDF of cards based on the mathematical principles of finite projective planes, ensuring that any two cards have exactly one symbol in common.
 
@@ -25,7 +25,7 @@ Finally, it assembles all the individual card images into a single `dobble.pdf` 
 You can download the python package with `pip`.
 
 ```sh
-pip install dobble-fun
+pip install dobble-gen
 ```
 
 Then the command line utility should be available for you.
@@ -33,7 +33,7 @@ Then the command line utility should be available for you.
 Eg.
 
 ```sh
-dobble-fun --image-dir images/ --symbols-per-card 7  --output-dir output/
+dobble-gen --image-dir images/ --symbols-per-card 7  --output-dir output/
 ```
 
 ## Contributing
@@ -47,7 +47,7 @@ dobble-fun --image-dir images/ --symbols-per-card 7  --output-dir output/
 1.  **Clone the repository:**
     ```sh
     git clone git@github.com:baptistegh/dobble-gen.git
-    cd dobble-fun
+    cd dobble-gen
     ```
 
 2.  **Add your images:**
@@ -78,7 +78,7 @@ Your files will be created in the `output/` directory:
 
 ## Customization
 
-You can easily tweak the game's parameters by editing the constants at the top of the `src/dobble_fun/generator.py` file:
+You can easily tweak the game's parameters by editing the constants at the top of the `src/dobble_gen/generator.py` file:
 
 *   `CARD_DIAMETER_CM`: The physical diameter of the cards when printed.
 *   `SYMBOLS_PER_CARD`: The number of symbols on each card. This determines the total number of cards and symbols needed. (e.g., 7 symbols/card = 43 cards, 8 symbols/card = 57 cards).
