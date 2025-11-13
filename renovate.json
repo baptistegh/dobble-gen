@@ -1,0 +1,9 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommend"
+  ],
+  "prConcurrentLimit": 5,
+  "labels": ["dependencies"],
+  "assignees": ["baptistegh"]
+}
