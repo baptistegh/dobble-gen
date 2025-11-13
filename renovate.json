@@ -3,6 +3,9 @@
   "extends": [
     "config:recommend"
   ],
+  "lockFileMaintenance": { 
+    "enabled": true
+  },
   "prConcurrentLimit": 5,
   "labels": ["dependencies"],
   "assignees": ["baptistegh"]
