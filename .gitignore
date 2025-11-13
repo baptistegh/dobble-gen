@@ -214,3 +214,6 @@ __marimo__/
 # images
 images/
 !images/.gitkeep
+
+# output
+output/
