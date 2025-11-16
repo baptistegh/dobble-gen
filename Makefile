@@ -1,3 +1,4 @@
+ARGS ?= 
 
 .PHONY: install
 install: | install-uv
@@ -24,7 +25,7 @@ style:
 # Run the application
 .PHONY: run
 run:
-	@uv run dobble-gen
+	@uv run dobble-gen run $(ARGS)
 
 # Clean up the virtual environment
 .PHONY: clean

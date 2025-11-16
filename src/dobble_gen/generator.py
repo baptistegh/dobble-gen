@@ -79,7 +79,6 @@ def draw_card(
     card = Image.new("RGBA", (card_diameter_px, card_diameter_px), (255, 255, 255, 0))
     draw = ImageDraw.Draw(card)
 
-    # === Cercle de découpe ===
     border_color = (50, 50, 50, 255)
     border_width = max(2, card_diameter_px // 200)
     draw.ellipse(
