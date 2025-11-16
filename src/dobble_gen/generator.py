@@ -51,6 +51,79 @@ def dobble_combinations(symbol_per_card: int, total_cards: int) -> list[list[int
     return cards
 
 
+def no_overlap(x, y, r, placed):
+    """Check that an image (center x, y, radius r) does not overlap the others."""
+    for px, py, pr in placed:
+        dist = math.hypot(px - x, py - y)
+        if dist < (r + pr) * 1.05:
+            return False
+    return True
+
+
+def draw_card(
+    card_diameter_px: int,
+    symbol_images: list[Image.Image],
+    indices: list[int],
+    filename: str,
+):
+    """Draw a circular Dobble card with all constraints."""
+    card = Image.new("RGBA", (card_diameter_px, card_diameter_px), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(card)
+
+    border_color = (50, 50, 50, 255)
+    border_width = max(2, card_diameter_px // 200)
+    draw.ellipse(
+        (
+            border_width // 2,
+            border_width // 2,
+            card_diameter_px - border_width // 2,
+            card_diameter_px - border_width // 2,
+        ),
+        fill=(255, 255, 255, 255),
+        outline=border_color,
+        width=border_width,
+    )
+
+    cx, cy = card_diameter_px // 2, card_diameter_px // 2
+    radius_limit = card_diameter_px / 2 - border_width // 2
+    placed = []
+
+    indices = list(dict.fromkeys(indices))  # aucune image répétée
+    random.shuffle(indices)
+
+    # Image centrale optionnelle
+    if random.random() < 0.6:
+        idx_center = indices.pop()
+        img = symbol_images[idx_center % len(symbol_images)].copy()
+        size = int(card_diameter_px * random.uniform(0.18, 0.22))
+        img = img.resize((size, size), Image.Resampling.LANCZOS)
+        img = img.rotate(random.uniform(0, 360), expand=True)
+        x = cx - img.width // 2
+        y = cy - img.height // 2
+        card.alpha_composite(img, (x, y))
+        placed.append((cx, cy, size / 2))
+
+    # Autres images
+    for idx in indices:
+        img = symbol_images[idx % len(symbol_images)].copy()
+        size = int(card_diameter_px * random.uniform(0.15, 0.25))
+        img = img.resize((size, size), Image.Resampling.LANCZOS)
+        img = img.rotate(random.uniform(0, 360), expand=True)
+
+        for _ in range(300):
+            angle = random.uniform(0, 2 * math.pi)
+            max_radius = radius_limit - size / 2
+            radius = random.uniform(0, max_radius)
+            x = int(cx + radius * math.cos(angle))
+            y = int(cy + radius * math.sin(angle))
+            if no_overlap(x, y, size / 2, placed):
+                card.alpha_composite(img, (x - img.width // 2, y - img.height // 2))
+                placed.append((x, y, size / 2))
+                break
+
+    card.save(filename, "PNG")
+
+
 def generate_pdf(output_dir: str, card_dir):
     pdf_path = os.path.join(output_dir, "dobble.pdf")
     c = canvas.Canvas(pdf_path, pagesize=A4)
