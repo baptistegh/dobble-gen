@@ -92,6 +92,15 @@ wheels = [
 ]
 
 [[package]]
+name = "circlify"
+version = "0.15.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/8f/ff3d9a37dec872ea83681627239c29c852675f6514380a50ed55982a0371/circlify-0.15.1.tar.gz", hash = "sha256:54103d82ab679128edb4cb77a0a1d8501935ca866a2dd8ae5605650508621bc9", size = 11808, upload-time = "2025-09-16T01:26:47.77Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/d8/0abcfb8629cc529e12df60e8bd73717c2588588f0744415158bde9d94ebf/circlify-0.15.1-py3-none-any.whl", hash = "sha256:5905236d60fa8e8adc6e10812392df7da274ab7454916d4a98f9a913eb474a1f", size = 11500, upload-time = "2025-09-16T01:26:46.556Z" },
+]
+
+[[package]]
 name = "click"
 version = "8.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -117,6 +126,7 @@ name = "dobble-gen"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "circlify" },
     { name = "pillow" },
     { name = "random2" },
     { name = "reportlab" },
@@ -133,6 +143,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "circlify", specifier = ">=0.15.1" },
     { name = "pillow", specifier = ">=12.0.0" },
     { name = "random2", specifier = ">=1.0.2" },
     { name = "reportlab", specifier = ">=4.4.4" },

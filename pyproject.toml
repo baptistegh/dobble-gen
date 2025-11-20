@@ -5,6 +5,7 @@ description = "Generate your own Dobble cards! Ready to be printed!"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "circlify>=0.15.1",
     "pillow>=12.0.0",
     "random2>=1.0.2",
     "reportlab>=4.4.4",
@@ -25,3 +26,6 @@ dev = [
     "ruff>=0.14.4",
     "types-reportlab>=4.4.4.20250926",
 ]
+
+[tool.mypy]
+ignore_missing_imports = true

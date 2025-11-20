@@ -1,14 +1,12 @@
-def is_prime(num):
-    """True if n is prime number"""
-    if num <= 1:
+import math
+
+
+def is_prime(n):
+    """
+    Check if number is a prime.
+
+    :param n: number to be checked
+    """
+    if n % 2 == 0 and n > 2:
         return False
-    elif num <= 3:
-        return True
-    if num % 2 == 0 or num % 3 == 0:
-        return False
-    i = 5
-    while i * i <= num:
-        if num % i == 0 or num % (i + 2) == 0:
-            return False
-        i += 6
-    return True
+    return all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2))

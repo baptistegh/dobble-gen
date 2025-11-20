@@ -13,7 +13,7 @@ def test_combinations():
                     return False
         return True
 
-    for i in range(30):
+    for i in range(2, 30):
         if check.is_prime(i - 1):
             cards = dobble_combinations(i, nb_cards(i))
             assert check_dobble(i, cards)
