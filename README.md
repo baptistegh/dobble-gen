@@ -4,82 +4,130 @@ Create your own personalized **Dobble** (or **Spot It!**) card game using your o
 
 ## Features
 
-*   **Mathematically Perfect**: Generates a complete set of cards where every card has a unique symbol in common with any other card.
-*   **Use Your Own Images**: Simply drop your `.jpg`, `.png`, or `.heif` files into the `images` directory.
-*   **Customizable**: Easily change the number of symbols per card, the card size, and other parameters in the `generator.py` script.
-*   **Print-Ready Output**: Produces a multi-page A4 PDF (`output/dobble.pdf`) with cards ready for printing and cutting.
+- **Mathematically Perfect**: Generates a complete set of cards where every two cards share exactly one symbol (based on finite projective plane theory).
+- **Use Your Own Images**: Simply drop your `.jpg`, `.png`, or `.heif` files into the `images` directory.
+- **Customizable**: Easily configure symbols per card, card size, DPI, and other parameters via CLI options.
+- **Print-Ready Output**: Produces a multi-page A4 PDF (`output/dobble.pdf`) with cards ready for printing and cutting.
+- **Circle Packing**: Uses advanced circle packing algorithms to arrange symbols elegantly on each card.
+- **No Symbol Overlap**: Intelligent placement ensures symbols are properly spaced and don't overlap.
 
 ## How It Works
 
-The script first loads all images from the `images-dir` directory. It then calculates the required number of cards and symbols based on the `symbols-per-card` parameter using the properties of a finite projective plane.
+The generation process follows these steps:
 
-For each card, it:
-1.  Draws a white circular background with a visible border for easy cutting.
-2.  Arranges the corresponding symbols on the card with random sizes, rotations, and positions, ensuring they don't overlap.
-3.  Saves the card as a `.png` file in the output directory.
+1. **Load Images**: Loads all supported images from the input directory (`.jpg`, `.png`, `.heif`)
+2. **Validate**: Ensures you have enough unique images for the desired card configuration
+3. **Generate Combinations**: Uses finite projective plane mathematics to create perfect card combinations
+4. **Create Cards**: For each card:
+   - Draws a circular white background with a styled border
+   - Uses circle packing to optimally arrange symbols with random sizes and rotations
+   - Ensures no symbols overlap while maximizing visual interest
+5. **Assemble PDF**: Combines all card images into a print-ready, multi-page A4 PDF
 
-Finally, it assembles all the individual card images into a single `dobble.pdf` file, laid out to fit on A4 pages.
+## Installation
 
-## Usage
-
-You can download the python package with `pip`.
+Install the package from PyPI:
 
 ```sh
 pip install dobble-gen
 ```
 
-Then the command line utility should be available for you.
+## Quick Start
 
-Eg.
+### Using the CLI
 
 ```sh
-dobble-gen --image-dir images/ --symbols-per-card 7  --output-dir output/
+dobble-gen --image-dir images/ --symbols-per-card 7 --output-dir output/
 ```
 
-## Contributing
+### Available Options
+
+```
+--image-dir        Directory containing symbol images (default: images)
+--output-dir       Directory for output files (default: output)
+--symbols-per-card Number of symbols per card, must be prime + 1 (default: 8)
+--card-diameter-cm Diameter of each card in cm (default: 10)
+--dpi              Output resolution in DPI (default: 300)
+--max-placement-retries Maximum attempts to place symbols (default: 1000)
+```
+
+### Example Configurations
+
+- **7 symbols per card**: Creates 43 cards with 43 unique symbols
+  ```sh
+  dobble-gen --symbols-per-card 7 --image-dir images/
+  ```
+
+- **6 symbols per card**: Creates 31 cards with 31 unique symbols
+  ```sh
+  dobble-gen --symbols-per-card 6 --image-dir images/
+  ```
+
+- **Custom card size and quality**:
+  ```sh
+  dobble-gen --card-diameter-cm 12 --dpi 600 --image-dir images/
+  ```
+
+## Development Setup
+
 ### Prerequisites
 
-* Python 3.10+
-* `curl` and `sh` (for automatically installing `uv` if not present).
-  
+- Python 3.10+
+- `uv` (for package management)
+
 ### Steps
 
-1.  **Clone the repository:**
-    ```sh
-    git clone git@github.com:baptistegh/dobble-gen.git
-    cd dobble-gen
-    ```
+1. **Clone the repository:**
+   ```sh
+   git clone git@github.com:baptistegh/dobble-gen.git
+   cd dobble-gen
+   ```
 
-2.  **Add your images:**
-    Create an `images` directory and place your desired symbol images inside it. The more unique images you have, the better!
-    ```sh
-    mkdir images
-    # Add your .png, .jpg, .heif files here
-    ```
-    > **Note**: The number of unique images required depends on the `SYMBOLS_PER_CARD` setting. The script will tell you if you don't have enough and will reuse images to complete the set.
+2. **Add your images:**
+   Create an `images` directory and place your symbol images inside:
+   ```sh
+   mkdir images
+   # Add your .png, .jpg, .heif files here
+   ```
+   
+   > **Note**: For 7 symbols per card, you need exactly 43 unique images. For 8 symbols per card, you need 57 images. The script will inform you of the required count.
 
-3.  **Install dependencies:**
-    The `Makefile` handles everything for you. It will create a virtual environment and install all necessary packages using `uv`.
-    ```sh
-    make install
-    ```
+3. **Install dependencies:**
+   ```sh
+   make install
+   ```
 
-## Usage
+4. **Generate the cards:**
+   ```sh
+   make run
+   ```
 
-To generate the cards and the final PDF, simply run:
+## Output
 
-```sh
-make run
-```
+Your generated files will be created in the `output/` directory:
 
-Your files will be created in the `output/` directory:
-*   `output/cartes/`: Contains the individual `.png` image for each card.
-*   `output/dobble.pdf`: The final, print-ready PDF file.
+- `output/cards/`: Contains individual `.png` images for each card
+- `output/dobble.pdf`: The final, print-ready PDF file ready for printing and cutting
 
-## Customization
+## Mathematical Background
 
-You can easily tweak the game's parameters by editing the constants at the top of the `src/dobble_gen/generator.py` file:
+This project uses the theory of **finite projective planes** to ensure the Dobble property (any two cards share exactly one symbol). For a projective plane of order `n`:
 
-*   `CARD_DIAMETER_CM`: The physical diameter of the cards when printed.
-*   `SYMBOLS_PER_CARD`: The number of symbols on each card. This determines the total number of cards and symbols needed. (e.g., 7 symbols/card = 43 cards, 8 symbols/card = 57 cards).
-*   `DPI`: The print quality of the output images.
+- Each card has `n + 1` symbols
+- Total cards = `n² - n + 1`
+- Total unique symbols = `n² - n + 1`
+- Any two cards share exactly one symbol
+
+Example: With 8 symbols per card (order 7), you get 57 cards with 57 unique symbols.
+
+## Troubleshooting
+
+**"You need X unique images"** - You don't have enough unique images for your configuration. Provide more images or reduce `symbols-per-card`.
+
+**Symbols overlapping** - Increase `--max-placement-retries` to allow more placement attempts.
+
+**Poor symbol arrangement** - Try with different `--symbols-per-card` values to find a configuration that works best with your images.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues or pull requests.
