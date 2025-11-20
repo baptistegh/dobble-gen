@@ -1,6 +1,9 @@
 ARGS ?= 
 
 .PHONY: install
+all: install style
+
+.PHONY: install
 install: | install-uv
 	@uv sync --locked --dev
 
@@ -26,6 +29,10 @@ style:
 .PHONY: run
 run:
 	@uv run dobble-gen run $(ARGS)
+
+.PHONY: test
+test:
+	@uv run pytest -q
 
 # Clean up the virtual environment
 .PHONY: clean

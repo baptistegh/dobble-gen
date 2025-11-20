@@ -11,6 +11,7 @@ from dobble_gen.config import (
     DEFAULT_SYMBOLS_PER_CARD,
     DEFAULT_CARD_DIAMETER_CM,
     DEFAULT_DPI,
+    DEFAULT_MAX_PLACEMENT_RETRIES,
 )
 
 app = typer.Typer()
@@ -22,12 +23,20 @@ def run(
     output_dir: str = DEFAULT_OUTPUT_DIR,
     symbols_per_card: int = DEFAULT_SYMBOLS_PER_CARD,
     card_diameter_cm: int = DEFAULT_CARD_DIAMETER_CM,
+    max_placement_retries: int = DEFAULT_MAX_PLACEMENT_RETRIES,
     dpi: int = DEFAULT_DPI,
 ) -> None:
     if not check.is_prime(symbols_per_card - 1):
-        print("symbol per card must be a prime number + 1")
+        print("symbol per card must be a prime number +1")
         sys.exit(1)
-    cfg = Config(images_dir, output_dir, symbols_per_card, card_diameter_cm, dpi)
+    cfg = Config(
+        images_dir,
+        output_dir,
+        symbols_per_card,
+        card_diameter_cm,
+        max_placement_retries,
+        dpi,
+    )
     generator.run(cfg)
 
 
