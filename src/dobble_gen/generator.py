@@ -71,7 +71,7 @@ def dobble_combinations(symbol_per_card: int, total_cards: int) -> list[list[int
     return cards
 
 
-def generate_pdf(output_dir: str, card_dir: str) -> None:
+def generate_pdf(output_dir: str, card_dir: str, card_diameter: int) -> None:
     """Assemble individual card images into a print-ready PDF document.
 
     Cards are arranged on A4 pages in a grid layout with proper spacing.
@@ -87,24 +87,24 @@ def generate_pdf(output_dir: str, card_dir: str) -> None:
     page_w, page_h = A4
     cm = 72 / 2.54  # Conversion factor from cm to points (1/72 inch)
     margin = 1.5 * cm
-    x, y = margin, page_h - 12 * cm  # Start position for first card
+    x, y = margin, page_h - (card_diameter + 2) * cm  # Start position for first card
 
     for f in sorted(os.listdir(card_dir)):
         if not f.endswith(".png"):
             continue
         path = os.path.join(card_dir, f)
         # Draw card at current position
-        c.drawImage(path, x, y, width=10 * cm, height=10 * cm)
+        c.drawImage(path, x, y, width=card_diameter * cm, height=card_diameter * cm)
         # Move to next position (right)
-        x += 11 * cm
+        x += (card_diameter + 1) * cm
         # Check if we need to move to next row
-        if x + 10 * cm > page_w:
+        if x + (card_diameter + 1) * cm > page_w:
             x = margin
-            y -= 11 * cm
+            y -= (card_diameter + 1) * cm
         # Check if we need a new page
         if y < margin:
             c.showPage()
-            x, y = margin, page_h - 12 * cm
+            x, y = margin, page_h - (card_diameter + 2) * cm
     c.save()
 
 
@@ -148,5 +148,5 @@ def run(config: Config) -> None:
         card.place_cards()
         card.save()
     print("Generating PDF...")
-    generate_pdf(config.output_dir, config.card_dir)
+    generate_pdf(config.output_dir, config.card_dir, config.card_diameter_cm)
     print(f"✅ Done! The cards are ready in '{config.output_dir}' 🎴")
